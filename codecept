@@ -4,10 +4,16 @@
  * Codeception CLI
  */
 
-require_once dirname(__FILE__).'/autoload.php';
+/**
+ * Path problem hack - applicable to using Vagrant in rsync mode (with fucked up symlinks).
+ */
+$autoloadPath = dirname(__FILE__) . '/autoload.php';
+if (!file_exists($autoloadPath)) {
+  $autoloadPath = dirname(__FILE__) . '/../codeception/codeception/autoload.php';
+}
+require_once $autoloadPath;
 
-use Symfony\Component\Console\Application,
-    Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Application;
 
 $app = new Application('Codeception', Codeception\Codecept::VERSION);
 $app->add(new Codeception\Command\Build('build'));
